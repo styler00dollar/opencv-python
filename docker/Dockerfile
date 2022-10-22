@@ -60,5 +60,5 @@ RUN git clone --recursive https://github.com/opencv/opencv-python.git
 ENV CMAKE_ARGS="-DOPENCV_EXTRA_MODULES_PATH=/workspace/opencv-python/opencv_contrib/modules  -D BUILD_TIFF=ON  -D BUILD_opencv_java=OFF  -D WITH_CUDA=ON  -D WITH_OPENGL=ON -D WITH_OPENCL=ON -D WITH_IPP=ON -D WITH_TBB=ON -D WITH_EIGEN=ON -D WITH_V4L=ON  -D BUILD_TESTS=OFF -D BUILD_PERF_TESTS=OFF -D CMAKE_BUILD_TYPE=RELEASE -D OPENCV_FFMPEG_USE_FIND_PACKAGE=ON -D BUILD_SHARED_LIBS=OFF  -D CUDA_ARCH_BIN=7.5,8.0,8.6,8.9  -D CMAKE_BUILD_TYPE=RELEASE"
 ENV ENABLE_CONTRIB=1
 
-RUN cd opencv-python && pip wheel . --verbose
+RUN cd opencv-python && MAKEFLAGS="-j$(nproc)" pip wheel . --verbose
 
