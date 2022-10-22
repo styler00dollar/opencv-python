@@ -8,15 +8,20 @@ WORKDIR workspace
 
 RUN apt update -y && apt upgrade -y && apt install wget -y
 
-# upgrading ffmpeg manually (https://johnvansickle.com/ffmpeg/)
-RUN wget https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-linux64-gpl.tar.xz && \
-    tar -xf ffmpeg-master-latest-linux64-gpl.tar.xz && export FFMPEG_PATH=$(find . -name 'ffmpeg') && \
-    chmod +x ${FFMPEG_PATH} && mv ${FFMPEG_PATH} /usr/bin/ffmpeg && rm -rf ffmpeg-master-* 
+# using own custom compiled ffmpeg
+RUN wget https://github.com/styler00dollar/VSGAN-tensorrt-docker/releases/download/models/ffmpeg && \
+    chmod +x ffmpeg && mv ffmpeg /usr/bin/ffmpeg
+
+# install conda
+RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
+     /bin/bash ~/miniconda.sh -b -p /opt/conda
+RUN /opt/conda/bin/conda create -y -n myenv python=3.7
+ENV PATH=/opt/conda/envs/myenv/bin:$PATH    
 
 RUN apt-get update && apt-get upgrade -y &&\
     # Install build tools, build dependencies and python
     apt-get install -y \
-	python3-pip \
+	    #python3-pip \
         build-essential \
         cmake \
         git \
@@ -47,8 +52,8 @@ RUN apt-get update && apt-get upgrade -y &&\
         libgtk2.0-dev \
         pkg-config \
         ## Python
-        python3-dev \
-        python3-numpy \
+        #python3-dev \
+        #python3-numpy \
     && rm -rf /var/lib/apt/lists/*
 
 RUN git clone --recursive https://github.com/opencv/opencv-python.git
