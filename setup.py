@@ -130,8 +130,6 @@ def main():
         [
             r"python/cv2/.*config.*.py"
         ]
-        +
-        [ r"python/cv2/py.typed" ] if sys.version_info >= (3, 6) else []
         ,
         "cv2.data": [  # OPENCV_OTHER_INSTALL_PATH
             ("etc" if os.name == "nt" else "share/opencv4") + r"/haarcascades/.*\.xml"
